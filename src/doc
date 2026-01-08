@@ -1,0 +1,27 @@
+// 1. L'utilisateur clique sur une checkbox
+//    → Émission d'un événement
+
+// 2. Le composant "dispatch" une action:
+this.store.dispatch(toggleTaskCompletion({ taskId: '123' }));
+//    ↑
+//    "Hé Store! La tâche 123 est maintenant faite!"
+
+// 3. Le reducer voit l'action:
+on(toggleTaskCompletion, (state, { taskId }) => ({
+  ...state,
+  tasks: state.tasks.map(task => 
+    task.id === taskId 
+      ? { ...task, completed: !task.completed }  // Inverse complété/non-complété
+      : task
+  )
+}));
+//    ↑
+//    "Ah! On me dit de modifier la tâche 123. Je crée un NOUVEAU tableau."
+
+// 4. Le store a maintenant un NOUVEL état
+
+// 5. Les selectors voient le changement:
+//    "Oh! Les tâches ont changé. Je vais prévenir tous ceux qui regardent."
+
+// 6. Les composants abonnés se mettent à jour
+//    La checkbox est maintenant cochée dans la vue

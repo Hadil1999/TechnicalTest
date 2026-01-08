@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Task } from 'src/app/core/models/task.model';
 
@@ -7,7 +7,7 @@ import { Task } from 'src/app/core/models/task.model';
   templateUrl: './task-form.component.html',
   styleUrls: ['./task-form.component.css'],
 })
-export class TaskFormComponent implements OnInit {
+export class TaskFormComponent implements OnInit, OnChanges {
   @Input() task?: Task;
   @Output() submitTask = new EventEmitter<Partial<Task>>();
 
@@ -20,7 +20,6 @@ export class TaskFormComponent implements OnInit {
 
   priorityLevels = [1, 2, 3, 4, 5] as const;
 
-  // Add today property
   get today(): string {
     return new Date().toISOString().split('T')[0];
   }
@@ -28,13 +27,14 @@ export class TaskFormComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    if (this.task) {
-      this.taskForm.patchValue({
-        title: this.task.title,
-        description: this.task.description,
-        priority: this.task.priority,
-        dueDate: this.formatDate(this.task.dueDate),
-      });
+    // Initialize with task data if it exists
+    this.patchFormWithTask();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // When task input changes (like when editing), update the form
+    if (changes['task'] && changes['task'].currentValue) {
+      this.patchFormWithTask();
     }
   }
 
@@ -54,6 +54,18 @@ export class TaskFormComponent implements OnInit {
       if (!this.task) {
         this.taskForm.reset({ priority: 3 });
       }
+    }
+  }
+
+  private patchFormWithTask(): void {
+    if (this.task) {
+      console.log('Patching form with task:', this.task); // Debug log
+      this.taskForm.patchValue({
+        title: this.task.title,
+        description: this.task.description,
+        priority: this.task.priority,
+        dueDate: this.formatDate(this.task.dueDate),
+      });
     }
   }
 

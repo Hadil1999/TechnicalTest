@@ -11,7 +11,6 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.login),
       map(({ email }) => {
-        // Mock authentication - just create a user object
         const user: User = { email };
         return AuthActions.loginSuccess({ user });
       }),
