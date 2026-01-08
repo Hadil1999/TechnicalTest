@@ -1,0 +1,128 @@
+.task-item {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 4px solid #007bff;
+  transition: all 0.3s ease;
+}
+
+.task-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.task-item.completed {
+  opacity: 0.7;
+  background: #f8f9fa;
+}
+
+.task-item.overdue {
+  border-left-color: #dc3545;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.task-title {
+  flex: 1;
+}
+
+.task-title h4 {
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.task-item.completed .task-title h4 {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+.priority-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #e9ecef;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.task-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-icon:hover {
+  background: #f8f9fa;
+}
+
+.task-body {
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.task-description {
+  margin: 0 0 15px 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+.task-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.due-date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.overdue-badge {
+  background: #dc3545;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.status span {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.completed-badge {
+  background: #28a745;
+  color: white;
+}
+
+.pending-badge {
+  background: #ffc107;
+  color: #212529;
+}
+
+/* Priority colors */
+.priority-1 { border-left-color: #28a745; }
+.priority-2 { border-left-color: #20c997; }
+.priority-3 { border-left-color: #ffc107; }
+.priority-4 { border-left-color: #fd7e14; }
+.priority-5 { border-left-color: #dc3545; }

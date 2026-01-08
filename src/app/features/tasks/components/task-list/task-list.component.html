@@ -1,0 +1,63 @@
+<div class="task-list-container">
+  <!-- Show tasks only if user is authenticated -->
+  <div *ngIf="currentUser$ | async as user; else notAuthenticated">
+    <div class="header">
+      <h2>Welcome, {{ user.email }}!</h2>
+      <button (click)="editingTask = null" *ngIf="editingTask" class="btn btn-secondary">
+        Cancel Edit
+      </button>
+    </div>
+
+    <!-- Task Form -->
+    <div class="task-form-section">
+      <h3>{{ editingTask ? 'Edit Task' : 'Add New Task' }}</h3>
+      
+      <!-- Fix: Use proper ternary operator with parentheses -->
+      <app-task-form 
+        [task]="editingTask || undefined"
+        (submitTask)="editingTask ? onUpdateTask($event) : onAddTask($event)">
+      </app-task-form>
+    </div>
+
+    <!-- Tasks List -->
+    <div class="tasks-section">
+      <h3>Your Tasks</h3>
+      
+      <!-- Filter buttons -->
+      <div class="filter-buttons">
+        <button (click)="filter = 'all'" [class.active]="filter === 'all'" class="btn-filter">
+          All ({{ (tasks$ | async)?.length || 0 }})
+        </button>
+        <button (click)="filter = 'pending'" [class.active]="filter === 'pending'" class="btn-filter">
+          Pending ({{ (pendingTasks$ | async)?.length || 0 }})
+        </button>
+        <button (click)="filter = 'completed'" [class.active]="filter === 'completed'" class="btn-filter">
+          Completed ({{ (completedTasks$ | async)?.length || 0 }})
+        </button>
+      </div>
+
+      <!-- No tasks message -->
+      <div *ngIf="(filteredTasks$ | async)?.length === 0" class="no-tasks">
+        <p>No tasks found. Add your first task above!</p>
+      </div>
+
+      <!-- Tasks List -->
+      <div class="tasks-grid">
+        <app-task-item
+          *ngFor="let task of filteredTasks$ | async"
+          [task]="task"
+          (edit)="onEditTask($event)"
+          (delete)="onDeleteTask($event)"
+          (toggle)="onToggleCompletion($event)">
+        </app-task-item>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #notAuthenticated>
+    <div class="not-authenticated">
+      <h3>Please log in to view and manage your tasks</h3>
+      <a routerLink="/auth" class="btn btn-primary">Go to Login</a>
+    </div>
+  </ng-template>
+</div>

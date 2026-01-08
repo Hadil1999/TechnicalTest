@@ -1,0 +1,69 @@
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
+  <div class="form-row">
+    <div class="form-group">
+      <label for="title">Title *</label>
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        placeholder="Task title"
+        class="form-control"
+      />
+      <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" 
+           class="error">
+        Title is required and must be at least 3 characters
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="priority">Priority</label>
+      <select id="priority" formControlName="priority" class="form-control">
+        <option *ngFor="let level of priorityLevels" [value]="level">
+          {{ level }} {{ level === 1 ? '(Lowest)' : level === 5 ? '(Highest)' : '' }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea
+      id="description"
+      formControlName="description"
+      placeholder="Task description (optional)"
+      class="form-control"
+      rows="3"
+    ></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="dueDate">Due Date *</label>
+    <input
+      id="dueDate"
+      type="date"
+      formControlName="dueDate"
+      class="form-control"
+      [min]="today"
+    />
+    <div *ngIf="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched" 
+         class="error">
+      Due date is required
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button 
+      type="submit" 
+      [disabled]="taskForm.invalid" 
+      class="btn btn-primary">
+      {{ task ? 'Update Task' : 'Add Task' }}
+    </button>
+    <button 
+      type="button" 
+      (click)="taskForm.reset({ priority: 3 })" 
+      class="btn btn-secondary"
+      *ngIf="!task">
+      Clear
+    </button>
+  </div>
+</form>

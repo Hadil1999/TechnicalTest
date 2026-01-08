@@ -1,0 +1,24 @@
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { TaskState } from './task.reducer';
+
+export const selectTaskState = createFeatureSelector<TaskState>('tasks');
+
+export const selectAllTasks = createSelector(
+  selectTaskState,
+  (state) => state.tasks
+);
+
+export const selectTasksByUser = (userId: string) =>
+  createSelector(selectAllTasks, (tasks) =>
+    tasks.filter((task) => task.userId === userId)
+  );
+
+export const selectCompletedTasks = createSelector(
+  selectAllTasks,
+  (tasks) => tasks.filter((task) => task.completed)
+);
+
+export const selectPendingTasks = createSelector(
+  selectAllTasks,
+  (tasks) => tasks.filter((task) => !task.completed)
+);
